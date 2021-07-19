@@ -12,7 +12,7 @@ const generateOptions = (data) => {
       height: 500,
     },
     title: {
-      text: 'Tổng ca nhiễm',
+      text: 'Nombre d\'infectés',
     },
     xAxis: {
       categories: categories,
@@ -45,7 +45,7 @@ const generateOptions = (data) => {
     },
     series: [
       {
-        name: 'Tổng Ca nhiễm',
+        name: 'Nombre d\'infectés',
         data: data.map((item) => item.Confirmed),
       },
     ],
@@ -78,9 +78,9 @@ const generateOptions = (data) => {
     return (
         <div>
             <ButtonGroup size='small' style={{display: 'flex', justifyContent: 'flex-end'}}>
-                <Button color={reportType === 'all' ? 'secondary' : ''} onClick={() => setReportType('all')}>All</Button>
-                <Button color={reportType === '30days' ? 'secondary' : ''} onClick={() => setReportType('30days')}>30 days</Button>
-                <Button color={reportType === '7days' ? 'secondary' : ''} onClick={() => setReportType('7days')}>7 days</Button>
+                <Button color={reportType === 'all' ? 'secondary' : ''} onClick={() => setReportType('all')}>Tous</Button>
+                <Button color={reportType === '30days' ? 'secondary' : ''} onClick={() => setReportType('30days')}>30 jours</Button>
+                <Button color={reportType === '7days' ? 'secondary' : ''} onClick={() => setReportType('7days')}>7 jours</Button>
             </ButtonGroup>
             <HighchartsReact highcharts={Highcharts} options={options} />
         </div>

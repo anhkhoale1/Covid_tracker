@@ -7,17 +7,17 @@ function Highlight({ report }) {
 
     const summary = [
         {
-            title: 'So ca nhiem',
+            title: 'Confirmés',
             count: data.Confirmed,
             type: 'confirmed',
         },
         {
-            title: 'Khoi',
+            title: 'Rétablis',
             count: data.Recovered,
             type: 'recovered',
         },
         {
-            title: 'Tu vong',
+            title: 'Décès',
             count: data.Deaths,
             type: 'death',
         },
