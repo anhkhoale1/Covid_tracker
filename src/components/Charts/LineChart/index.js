@@ -2,14 +2,32 @@ import React, { useEffect, useState } from 'react';
 import Highcharts from 'highcharts';
 import HighchartsReact from 'highcharts-react-official';
 import moment from 'moment';
-import { Button, ButtonGroup } from '@material-ui/core';
+import { Button, ButtonGroup } from '@mui/material';
+import HighchartsAccessibility from 'highcharts/modules/accessibility';
+
+// Initialize accessibility module
+HighchartsAccessibility(Highcharts);
 
 const generateOptions = (data) => {
-    const categories = data.map((item) => moment(item.Date).format('DD/MM/YYYY'));
+    const categories = data.map((item) => moment(item.Date, 'YYYY-MM-DD').format('DD/MM/YYYY'));
 
   return {
     chart: {
       height: 500,
+    },
+    accessibility: {
+      enabled: true,
+      description: 'Graphique montrant le nombre de cas confirmés de COVID-19',
+      announceNewData: {
+        enabled: true,
+        minAnnounceInterval: 15000,
+        announcementFormatter: function (allSeries, newSeries, newPoint) {
+          if (newPoint) {
+            return 'Nouveau point de données: ' + newPoint.y + ' cas le ' + newPoint.category;
+          }
+          return false;
+        }
+      }
     },
     title: {
       text: 'Nombre d\'infectés',
@@ -32,7 +50,7 @@ const generateOptions = (data) => {
       headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
       pointFormat:
         '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
-        '<td style="padding:0"><b>{point.y} ca</b></td></tr>',
+        '<td style="padding:0"><b>{point.y} cas</b></td></tr>',
       footerFormat: '</table>',
       shared: true,
       useHTML: true,
@@ -77,10 +95,25 @@ const generateOptions = (data) => {
 
     return (
         <div>
-            <ButtonGroup size='small' style={{display: 'flex', justifyContent: 'flex-end'}}>
-                <Button color={reportType === 'all' ? 'secondary' : ''} onClick={() => setReportType('all')}>Tous</Button>
-                <Button color={reportType === '30days' ? 'secondary' : ''} onClick={() => setReportType('30days')}>30 jours</Button>
-                <Button color={reportType === '7days' ? 'secondary' : ''} onClick={() => setReportType('7days')}>7 jours</Button>
+            <ButtonGroup size='small' sx={{ display: 'flex', justifyContent: 'flex-end' }}>
+                <Button 
+                    variant={reportType === 'all' ? 'contained' : 'outlined'} 
+                    onClick={() => setReportType('all')}
+                >
+                    Tous
+                </Button>
+                <Button 
+                    variant={reportType === '30days' ? 'contained' : 'outlined'} 
+                    onClick={() => setReportType('30days')}
+                >
+                    30 jours
+                </Button>
+                <Button 
+                    variant={reportType === '7days' ? 'contained' : 'outlined'} 
+                    onClick={() => setReportType('7days')}
+                >
+                    7 jours
+                </Button>
             </ButtonGroup>
             <HighchartsReact highcharts={Highcharts} options={options} />
         </div>

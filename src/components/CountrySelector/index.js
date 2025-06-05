@@ -1,39 +1,36 @@
 import React from 'react';
-import { FormControl, FormHelperText, InputLabel, NativeSelect } from '@material-ui/core';
-import { makeStyles } from '@material-ui/core/styles';
+import { FormControl, FormHelperText, InputLabel, NativeSelect } from '@mui/material';
+import { styled } from '@mui/material/styles';
 
-const useStyle = makeStyles((theme) => ({
-    formControl: {
-        margin: `${theme.spacing(3)}px 0`,
-    }
+const StyledFormControl = styled(FormControl)(({ theme }) => ({
+    margin: `${theme.spacing(3)} 0`,
 }));
 
-function CountrySelector( { value, handleOnChange, countries }) {
-    const style = useStyle();
-
+function CountrySelector({ value, handleOnChange, countries }) {
     return (
-    <FormControl className={style.formControl}>
-        <InputLabel htmlFor='country-selector' shrink>
-            Pays
-        </InputLabel>
-        <NativeSelect
-            value={value}
-            onChange={handleOnChange}
-            inputProps={{
-                name: 'country',
-                id: 'country-selector',
-            }}
-        >
-            {countries.map((country) => {
-                return (
-                    <option key={country.ISO2} value={country.ISO2.toLowerCase()}>
-                        {country.Country}
-                    </option>
-                );
-            })}
-        </NativeSelect>
-        <FormHelperText>Choissiez un pays</FormHelperText>
-    </FormControl>
+        <StyledFormControl>
+            <InputLabel htmlFor='country-selector' shrink>
+                Pays
+            </InputLabel>
+            <NativeSelect
+                value={value || ''}
+                onChange={handleOnChange}
+                inputProps={{
+                    name: 'country',
+                    id: 'country-selector',
+                }}
+            >
+                {countries && countries.map((country) => {
+                    if (!country || !country.countryInfo || !country.countryInfo.iso2) return null;
+                    return (
+                        <option key={country.countryInfo.iso2} value={country.countryInfo.iso2.toLowerCase()}>
+                            {country.country}
+                        </option>
+                    );
+                })}
+            </NativeSelect>
+            <FormHelperText>Choissiez un pays</FormHelperText>
+        </StyledFormControl>
     );
 }
 

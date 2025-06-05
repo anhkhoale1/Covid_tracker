@@ -1,37 +1,37 @@
 import React from 'react';
-import { Card, CardContent, Typography, makeStyles } from '@material-ui/core';
+import { Card, CardContent, Typography } from '@mui/material';
+import { styled } from '@mui/material/styles';
 import CountUp from 'react-countup';
 
-const useStyles = makeStyles({
-    wrapper: (props) => {
-        if (props.type === 'confirmed') return { borderLeft: '5px solid #c9302c' };
-        if (props.type === 'recovered') return { borderLeft: '5px solid #28a745' };
-        else return { borderLeft: '5px solid gray' };
-    },
-    title: {
+const StyledCard = styled(Card)(({ theme, type }) => ({
+    borderLeft: type === 'confirmed' ? '5px solid #c9302c' : 
+                type === 'recovered' ? '5px solid #28a745' : 
+                '5px solid gray'
+}));
+
+const StyledTypography = styled(Typography)(({ theme }) => ({
+    '&.title': {
         fontSize: 18,
         marginBottom: 5,
     },
-    count: {
+    '&.count': {
         fontWeight: 'bold',
         fontSize: 18,
     }
-});
+}));
 
-function HighlightCard({ title, count, type}) {
-    const styles = useStyles({ type });
-
+function HighlightCard({ title, count, type }) {
     return (
-    <Card className={styles.wrapper}>
-        <CardContent >
-            <Typography component='p' variant='body2' className={styles.title}>
-               {title}
-            </Typography>
-            <Typography component='span' variant='body2' className={styles.count}>
-                <CountUp end={count || 0} duration={2} separator=' '/>
-            </Typography>
-        </CardContent>
-    </Card>
+        <StyledCard type={type}>
+            <CardContent>
+                <StyledTypography component='p' variant='body2' className="title">
+                    {title}
+                </StyledTypography>
+                <StyledTypography component='span' variant='body2' className="count">
+                    <CountUp end={count || 0} duration={2} separator=' ' />
+                </StyledTypography>
+            </CardContent>
+        </StyledCard>
     );
 }
 

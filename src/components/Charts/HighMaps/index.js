@@ -2,14 +2,23 @@ import React, { useEffect, useRef, useState } from 'react';
 import Highcharts from 'highcharts';
 import HighchartsReact from 'highcharts-react-official';
 import highchartsMap from 'highcharts/modules/map';
+import HighchartsAccessibility from 'highcharts/modules/accessibility';
 import { cloneDeep } from 'lodash';
 
 // Load Highcharts modules
 highchartsMap(Highcharts);
+HighchartsAccessibility(Highcharts);
 
 const initOptions = {
     chart: {
       height: '500',
+    },
+    accessibility: {
+      enabled: true,
+      description: 'Carte montrant la distribution des cas de COVID-19',
+      keyboardNavigation: {
+        enabled: true
+      }
     },
     title: {
       text: null,
@@ -35,7 +44,7 @@ const initOptions = {
     series: [
       {
         mapData: {},
-        name: 'Dân số',
+        name: 'Population',
         joinBy: ['hc-key', 'key'],
       },
     ],
@@ -48,7 +57,6 @@ const initOptions = {
 
     useEffect(() => {
         if (mapData && Object.keys(mapData).length){
-          console.log({ mapData });
           const fakeData = mapData.features.map((feature, index) => ({
             key: feature.properties['hc-key'],
             value: index,
